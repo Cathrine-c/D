@@ -207,9 +207,6 @@ public class Day18 {
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
 
-        if (nums.length < 3) {
-            return result;
-        }
 
         Arrays.sort(nums);
         for (int i=0;i<nums.length;i++){
@@ -248,12 +245,141 @@ public class Day18 {
     }
 
 
-    public static void main(String[] args) {
+    public static void main6(String[] args) {
 
         int[] nums={-1,0,1,2,-1,-4};
         System.out.println(threeSum(nums));
 
     }
+
+
+    /**三数之和
+     *给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，
+     * 使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+     */
+    public static int threeSumClosest(int[] nums, int target) {
+
+        Arrays.sort(nums);
+
+        int min = 10000;
+
+        for(int i = 0; i < nums.length-2; i++) {
+
+            if(i > 0 && nums[i] == nums[i-1])
+                continue;
+
+            int left = i+1, right = nums.length-1;
+
+            int sum = 0;
+            // 双指针
+            while(left < right) {
+                sum = nums[i]+nums[left]+nums[right];
+
+                if(sum == target)
+                    return target;
+                if(Math.abs(sum-target) < Math.abs(min-target)) {
+
+                    min = sum;
+
+                }
+
+                if(sum < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+
+            }
+        }
+        return min;
+
+    }
+
+
+    public static void main8(String[] args) {
+        int[] nums={0,2,1,-3};
+        int tar = 0;
+        System.out.println(threeSumClosest(nums, tar));
+
+    }
+
+
+
+    public List<String> letterCombinations(String digits) {
+       List<String> list = new ArrayList<>();
+
+        if (digits == null || digits.isEmpty()) {
+            return list;
+        }
+
+
+        String[] str = {"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        //键盘上各个键对应的字符串
+        String[] arr = new String[digits.length()];
+
+        for (int i=0;i<digits.length();i++){
+
+            char c = digits.charAt(i);
+
+            arr[i] = str[Integer.valueOf(Character.toString(c))-2];
+
+        }
+
+        dfs(arr,0,new StringBuilder(),list);
+        return list;
+
+    }
+
+
+    private void dfs(String[] arr, int index, StringBuilder curStr, List<String> list) {
+        if (index == arr.length) {
+
+            list.add(curStr.toString());
+            return;
+        }
+
+        String str = arr[index];
+        int len = str.length();
+        for (int i=0;i<len;i++){
+
+            curStr.append(str.charAt(i));
+
+            dfs(arr,index+2,curStr,list);
+            curStr.deleteCharAt(index);
+
+        }
+
+    }
+
+
+    public static int binary(int[] nums,int target){
+
+        int left=0;
+        int right = nums.length-1;
+        int mid = 0;
+
+        while (left < right) {
+            mid = (right+left)/2;
+
+            if (target==nums[mid]){
+                return nums[mid];
+
+            }else if (target<nums[mid]){
+
+                right = mid-1;
+
+            }else {
+                left = mid+1;
+
+            }
+
+        }
+
+        return -1;
+
+
+    }
+
 
 }
 
